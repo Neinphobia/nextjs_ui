@@ -38,13 +38,12 @@ const config: Config = {
 export default config;
 
 // This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
-function addVariablesForColors({ addBase, theme }) {
- let allColors = flattenColorPalette(theme("colors"));
+function addVariablesForColors(plugin: { addBase: Function; theme: any }) {
+ let allColors = flattenColorPalette(plugin.theme("colors"));
  let newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
  );
-
- addBase({
+ plugin.addBase({
     ":root": newVars,
  });
 }
